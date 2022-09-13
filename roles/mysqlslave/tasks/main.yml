@@ -1,0 +1,47 @@
+---
+# tasks file for mysql-slave
+- name: Create a mysql slave
+  k8s:
+    state: present
+    definition:
+      kind: "Deployment"
+      apiVersion: "apps/v1"
+      metadata:
+        name: "mysql-slave"
+        namespace: "managed-mysql"
+      spec:
+        replicas: "{{size}}"
+        selector:
+          matchLabels:
+            name: "mysql-slave"
+        strategy: {}
+        template:
+          metadata:
+            labels:
+              name: "mysql-slave"
+          spec:
+            containers:
+              - name: "mysql-slave"
+                image: "docker.io/centos/mariadb-103-centos8:latest"
+                command:
+                  - "run-mysqld-slave"
+                ports:
+                  - containerPort: 3306
+                    protocol: "TCP"
+                env:
+                  - name: "MYSQL_MASTER_USER"
+                    value: "replica"
+                  - name: "MYSQL_MASTER_PASSWORD"
+                    value: "replica"
+                  - name: "MYSQL_DATABASE"
+                    value: "mydb"
+                  - name: "MYSQL_MASTER_SERVICE_NAME"
+                    value: "mysql-master"
+                resources: {}
+                terminationMessagePath: "/dev/termination-log"
+                imagePullPolicy: "IfNotPresent"
+                securityContext:
+                  capabilities: {}
+                  privileged: false
+            restartPolicy: "Always"
+            dnsPolicy: "ClusterFirst"

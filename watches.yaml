@@ -1,0 +1,10 @@
+---
+- version: v1
+  group: mysql.example.com
+  kind: MysqlMaster
+  role: mysqlmaster
+
+- version: v1
+  group: mysql.example.com
+  kind: MysqlSlave
+  role: mysqlslave

@@ -1,0 +1,22 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: mysqlmasters.mysql.example.com
+spec:
+  group: mysql.example.com
+  names:
+    kind: MysqlMaster
+    listKind: MysqlMasterList
+    plural: mysqlmasters
+    singular: mysqlmaster
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources:
+      status: {}

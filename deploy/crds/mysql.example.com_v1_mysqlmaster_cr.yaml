@@ -1,0 +1,7 @@
+apiVersion: mysql.example.com/v1
+kind: MysqlMaster
+metadata:
+  name: example-mysqlmaster
+spec:
+  # Add fields here
+  size: 1

@@ -1,0 +1,7 @@
+apiVersion: mysql.example.com/v1
+kind: MysqlSlave
+metadata:
+  name: example-mysqlslave
+spec:
+  # Add fields here
+  size: 1

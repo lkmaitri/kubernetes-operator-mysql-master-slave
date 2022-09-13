@@ -1,0 +1,11 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: mysql-master
+subjects:
+- kind: ServiceAccount
+  name: mysql-master
+roleRef:
+  kind: Role
+  name: mysql-master
+  apiGroup: rbac.authorization.k8s.io

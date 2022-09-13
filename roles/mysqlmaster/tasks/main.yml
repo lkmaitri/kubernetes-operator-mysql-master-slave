@@ -1,0 +1,74 @@
+---
+# tasks file for mysql-master
+- name: Creating mysql master deployment
+  k8s: 
+    state: present
+    definition: 
+      kind: "Deployment"
+      apiVersion: "apps/v1"
+      metadata:
+        name: "mysql-master"
+        namespace: "managed-mysql"
+      spec:
+        replicas: "{{size}}"
+        selector:
+          matchLabels:
+            name: "mysql-master"
+        strategy: {}
+        template:
+          metadata:
+            labels:
+              name: "mysql-master"
+          spec:
+            containers:
+              - name: "mysql-server"
+                image: "docker.io/centos/mariadb-103-centos8:latest"
+                command:
+                  - "run-mysqld-master"
+                ports:
+                  - containerPort: 3306
+                    protocol: "TCP"
+                env:
+                  - name: "MYSQL_MASTER_USER"
+                    value: "replica"
+                  - name: "MYSQL_MASTER_PASSWORD"
+                    value: "replica"
+                  - name: "MYSQL_USER"
+                    value: "shubham"
+                  - name: "MYSQL_PASSWORD"
+                    value: "redhat"
+                  - name: "MYSQL_DATABASE"
+                    value: "mydb"
+                  - name: "MYSQL_ROOT_PASSWORD"
+                    value: "redhat"
+                resources: {}
+                terminationMessagePath: "/dev/termination-log"
+                imagePullPolicy: "IfNotPresent"
+                securityContext:
+                  capabilities: {}
+                  privileged: false
+            restartPolicy: "Always"
+            dnsPolicy: "ClusterFirst"
+
+- name: create mysqlmaster headless service
+  k8s:
+    state: present
+    definition:
+      kind: "Service"
+      apiVersion: "v1"
+      metadata:
+        name: "mysql-master"
+        namespace: "managed-mysql"
+        labels:
+          name: "mysql-master"
+      spec:
+        ports:
+          - protocol: "TCP"
+            port: 3306
+            targetPort: 3306
+            nodePort: 0
+        selector:
+          name: "mysql-master"
+        clusterIP: "None"
+        type: "ClusterIP"
+        sessionAffinity: "None"

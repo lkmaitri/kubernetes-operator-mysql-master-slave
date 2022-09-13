@@ -1,0 +1,22 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: mysqlslaves.mysql.example.com
+spec:
+  group: mysql.example.com
+  names:
+    kind: MysqlSlave
+    listKind: MysqlSlaveList
+    plural: mysqlslaves
+    singular: mysqlslave
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources:
+      status: {}
