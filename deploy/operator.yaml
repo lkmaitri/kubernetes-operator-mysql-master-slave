@@ -16,7 +16,7 @@ spec:
       serviceAccountName: mysql-master
       containers:
         - name: mysql-master-operator
-          image: "docker.io/shkatara/mysql-master-operator:latest"
+          image: "docker.io/mdhack/myope:v1"
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
